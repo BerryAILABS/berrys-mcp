@@ -1,0 +1,12 @@
+{
+  "identifier": "berrys-canvas",
+  "name": "Berrys AI",
+  "version": "0.3.1",
+  "description": "Give your agent a creative studio. Turn one product photo into on-brand listing images, campaign visuals, and short vertical videos.",
+  "homepage": "https://github.com/BerryAILABS/berrys-mcp",
+  "author": "BerryAILABS",
+  "authorUrl": "https://github.com/BerryAILABS",
+  "cloudEndpoint": "https://app.berrys.io/api/mcp",
+  "icon": "🎨",
+  "tags": ["design", "image-generation", "video-generation", "marketing", "creativity"]
+}
