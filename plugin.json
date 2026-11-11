@@ -19,6 +19,13 @@
     "brand-memory"
   ],
   "extensions": {
+    "com.nousresearch.hermes": {
+      "servers": {
+        "berrys": {
+          "trust": "untrusted"
+        }
+      }
+    },
     "com.openai": {
       "interface": {
         "displayName": "Berrys AI",
