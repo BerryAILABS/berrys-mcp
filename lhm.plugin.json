@@ -1,12 +1,424 @@
 {
   "identifier": "berrys-canvas",
   "name": "Berrys AI",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Give your agent a creative studio. Turn one product photo into on-brand listing images, campaign visuals, and short vertical videos.",
   "homepage": "https://github.com/BerryAILABS/berrys-mcp",
   "author": "BerryAILABS",
   "authorUrl": "https://github.com/BerryAILABS",
   "cloudEndpoint": "https://app.berrys.io/api/mcp",
-  "icon": "🎨",
-  "tags": ["design", "image-generation", "video-generation", "marketing", "creativity"]
+  "icon": "https://app.berrys.io/berrys-mcp-icon.png",
+  "category": "design",
+  "tags": [
+    "design",
+    "image-generation",
+    "video-generation",
+    "marketing",
+    "creativity"
+  ],
+  "tools": [
+    {
+      "name": "playground_actions_discover",
+      "description": "Discover implemented media editing and canvas actions. No project needed to browse; include projectId to check its permissions. By default, omit unavailable actions. Does not inspect a canvas, enable a feature, edit media or spend credits. Follow each action\u2019s tool schema when applying it.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_brands_list",
+      "description": "List brands owned by the connected account. Use when the user wants to choose existing brand rules. Does not select an active brand, open a project or spend credits.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_brand_get",
+      "description": "Read the connected account\u2019s selected brand and saved Brand DNA. Does not change the account\u2019s active brand or apply the rules to a generation.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_canvas_open",
+      "description": "Return the authorized project URL focused on selected node IDs. If your host has an in-app browser, open it beside chat and reuse that project tab. Otherwise show the link. This tool does not itself control a browser or prove the user is signed in.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_context_current",
+      "description": "Use only when the user asks to work on their open project or selection. Return lightweight context from an authorized editor active in the last 2 minutes. Never choose a recent or unrelated project. General questions about Berrys do not need this tool. Does not open or render a canvas; use playground_canvas_open only when a preview is requested or needed for the task.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_project_create",
+      "description": "Create a new, empty Playground project owned by the signed-in user. For a fresh generation request with no named, linked or conversation-established project, create one automatically with a concise name from the brief; do not ask for separate project-creation permission or inspect unrelated projects first. Reuse its ID for follow-up work on the same task. General questions do not need a project. Creation spends no credits; paid generation still requires a quote and user approval. Returns the project ID and canvasUrl.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_brief_start",
+      "description": "Start the Berrys agent on a brief and return at once with runId and canvasUrl; it never waits. Follow it with playground_run_events (afterSeq, optionally waitSeconds) for progress, approvals and the final response, and playground_run_diagnose if it fails. projectId defaults to the project the user has open (playground_context_current). files are node IDs of uploaded media to use as references; connectorAccountIds lets the agent read connected sources (needs connector:read). Pass conversationId to continue an earlier brief. Requires agent:start; paid steps still need approval.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_run_events",
+      "description": "Return only what changed in a run since afterSeq: compact events, a status line, pending approvals, the final response once it ends, nextAfterSeq, and retry_after_seconds (wait that long before polling again; null once the run has ended). Give runId, or conversationId for the latest run in that conversation (e.g. after reconnecting). Pass waitSeconds (up to 25) to have the server wait for new events or a status change before answering. Read-only.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_run_diagnose",
+      "description": "One report for a run: verdict (succeeded, failed, waiting_approval, running, cancelled), the failed step, the last good step, failed media jobs with errors, and the suggested next action. Read-only.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_run_steer",
+      "description": "Add a note to a production plan that is running: it applies to steps that have not started and later outputs are reviewed against it. Steps already generating are unchanged. Ended runs cannot be steered; send playground_brief_start with the run\u2019s conversationId instead. Requires agent:start.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_memory_proposal_review",
+      "description": "Approve or reject one proposed memory note for this project, as the user would in Berrys. Approved notes are read by the Berrys agent on later turns; rejected ones are archived. External apps cannot approve memory proposals; the user must review them in Berrys.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_drive_image_import",
+      "description": "Copy one explicitly selected PNG/JPEG/WebP image (up to 8 MB) from your connected Google Drive account into Berrys reference storage, where generation providers can fetch it. Returns a File nodeId: pass it in referenceNodeIds to use it. Requires a connected Drive account belonging to this Berrys user; another agent\u2019s Drive connection is not inherited. Free; no generation starts. Never accepts credentials or a sharing-page URL.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_video_extract_frames",
+      "description": "Extract frames from a Playground clip",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_media_compose",
+      "description": "Assemble Playground clips into one film",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_video_trim",
+      "description": "Trim a Playground clip",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_media_compare",
+      "description": "Compare 2\u20134 images or 2\u20134 videos side by side on the canvas. Two images fill a Compare (image-compare) node\\",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_video_analyze",
+      "description": "Read-only facts about one video node: its clip URL, model and settings, frame nodes already taken from it, objective FFmpeg measurements (duration, black segments, silence, loudness) when the server has FFmpeg, and any visual analysis the Berrys agent already made of this exact clip. It never makes a new paid model call, so a new shot table or visual description is not produced here; ask the Berrys agent (playground_brief_start) for that.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_asset_import",
+      "description": "Download one public HTTPS image (PNG, JPEG, WebP, \u22648 MB), video (MP4, \u226416 MB) or audio file (MP3 or WAV, \u226412 MB), check its bytes, copy it into project storage, and add it as a file node that can feed image and video generation. Private, local and internal addresses are refused, and every redirect is rechecked. Free; revision checked and idempotent.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_node_run",
+      "description": "Run the generation already configured on 1\u201320 existing image, video or audio nodes. Image: prompt (its Text node), modelId, aspectRatio, wired references. Video: instructions, modelId, aspectRatio, duration, wired references and first/last frames. Audio: the node\\",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_media_generate",
+      "description": "Batch-generate 1\u201320 images, videos or audio tracks (FLORA-style). Each image/video item becomes a new node, with its prompt Text node and wired referenceNodeIds; each audio item becomes an audio node holding its words (prompt), modelId (default minimax:speech-2.8-hd), voice or style. Nodes are placed in free space in one revision-checked canvas edit, then run like playground_node_run. quote: true validates references, saves a ten-minute quoteId, prices every item and changes no canvas nodes; execution requires that quoteId (canvas:read). Otherwise it needs media:spend; every paid request returns approval_required for the user to confirm in their agent chat. A retried idempotencyKey never creates or charges twice.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_content_prepare",
+      "description": "The easiest way to start making content. Give a short brief and the images, clips or audio needed; intendedUse is optional. Berrys turns this into explicit prompts and an exact, free credit quote in one call. It does not create nodes or spend credits. For a new creative task, create a fresh project first with playground_project_create; for a follow-up, reuse its projectId. Import any uploaded or linked image to that project first and pass its image node ID as a reference. Audio needs the exact spoken words or lyrics. Review the returned prompts, references, defaults and price with the user; the returned mediaGenerateRequest is the exact input for playground_media_generate with quoteId and a new idempotencyKey when they want to proceed.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_media_retry_quote",
+      "description": "Read fresh receipts for one run and quote replacements only for confirmed failed items, including individual List outputs. Completed, pending, active, uncertain and changed-reference items are excluded. Optional dispatchIds selects failed items explicitly. Quote only: no canvas edit, approval or generation. Returns exact retryPlan.items and quoteId for playground_media_generate; user confirmation is still required before spending.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_skills_discover",
+      "description": "Explore built-in playbooks without opening or creating a project. Search by query/category and follow nextOffset. Include projectId only to include that project\u2019s private skills after an access check. Skills teach a method; they do not grant permissions or spend credits.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_skill_load",
+      "description": "Load exact versioned instructions. Built-in skills need no projectId. Private project skills require projectId and scope: project, with current read access. Does not generate media or grant permissions.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_workflow_search",
+      "description": "Find accessible saved project workflows by name. Returns workflow IDs for inspection and staged execution. This does not search public templates.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_workflow_inspect",
+      "description": "Read typed source input contracts, generation dependencies, completed outputs, pending/active work and blockers. Returns the next ready stage without spending. Use before running a saved campaign.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_workflow_inputs_set",
+      "description": "Save text/List inputs, prompts, formats, durations, audio settings and image reference choices from workflow_inspect. Free, atomic, revision checked and idempotent. Completed, active and approved steps are read-only, including their shared inputs. Does not generate or approve anything. Returns the refreshed workflow form. Upload new reference media first; choose its existing node ID.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_workflow_quote",
+      "description": "Quote only the next ready empty steps from workflow_inspect, up to 20 outputs. Does not edit the canvas, prepare approval or submit generation. Safe for the chat workflow form. Returns the exact stageNodeIds, revision and quoteId for a later chat-confirmed playground_workflow_run request.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    },
+    {
+      "name": "playground_workflow_run",
+      "description": "Run a saved workflow through its ready image/video/audio stages. quote:true prices up to 20 ready nodes including connected List batches. Pass the returned stageNodeIds, expectedRevision, quoteId and a NEW idempotencyKey with quote:false to prepare chat confirmation. Does not auto-approve or dispatch dependent stages. After existing jobs settle, inspect/quote the next stage until completed. Preserve completed, active and uncertain work; no Berrys-agent delegation is needed.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "projectId": {
+            "type": "string",
+            "description": "Berrys project ID"
+          }
+        }
+      }
+    }
+  ],
+  "resources": [
+    {
+      "uri": "berrys://gallery",
+      "name": "berrys-media-gallery",
+      "description": "Generated images, videos and visual assets on the Berrys canvas"
+    },
+    {
+      "uri": "berrys://canvas/app",
+      "name": "berrys-canvas-app",
+      "description": "Interactive visual canvas UI for live review and editing"
+    }
+  ],
+  "prompts": [
+    {
+      "name": "berrys-quickstart",
+      "description": "Quickstart prompt: discover Berrys capabilities and setup your project"
+    },
+    {
+      "name": "berrys-campaign-plan",
+      "description": "Plan campaign visuals, listing shot lists, and copy variants from product photos"
+    },
+    {
+      "name": "berrys-product-video",
+      "description": "Storyboard a multi-shot product video and maintain reference continuity across cuts"
+    }
+  ]
 }
