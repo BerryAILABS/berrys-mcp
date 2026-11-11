@@ -1,0 +1,50 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "berrys",
+  "version": "0.3.5",
+  "description": "Give your agent a creative studio: turn one product photo into on-brand listing images, campaign visuals and short vertical videos.",
+  "author": {
+    "name": "Berrys AI Labs Pte Ltd",
+    "url": "https://berrys.io"
+  },
+  "homepage": "https://berrys.io",
+  "repository": "https://github.com/BerryAILABS/berrys-mcp",
+  "license": "MIT",
+  "keywords": [
+    "ecommerce",
+    "product-photography",
+    "listing-images",
+    "campaign-creatives",
+    "product-video",
+    "brand-memory"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Berrys AI",
+        "shortDescription": "Product photos to campaigns",
+        "longDescription": "Bring a product photo and a brief. Create listing images, campaign visuals and short product clips with Berrys, and keep related work together on one canvas. Review the creative direction and credit quote before generation.",
+        "developerName": "Berrys AI",
+        "category": "Creativity",
+        "capabilities": [
+          "Create product images",
+          "Plan campaign assets",
+          "Generate short product clips",
+          "Refine saved canvas work"
+        ],
+        "websiteURL": "https://berrys.io",
+        "supportURL": "https://berrys.io/plugins",
+        "privacyPolicyURL": "https://berrys.io/privacy-policy",
+        "termsOfServiceURL": "https://berrys.io/terms-of-service",
+        "defaultPrompt": [
+          "Create marketplace listing images from my product photo.",
+          "Turn my product photo into a short vertical video.",
+          "Plan campaign visuals and editable copy for my product."
+        ],
+        "brandColor": "#020035",
+        "brandColorDark": "#EB4C02",
+        "logo": "https://app.berrys.io/berrys-mcp-icon.png"
+      }
+    }
+  }
+}
