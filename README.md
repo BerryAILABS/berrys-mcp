@@ -1,5 +1,7 @@
 # Berrys AI — MCP Server
 
+[![MCP Badge](https://lobehub.com/badge/mcp/berrys-canvas)](https://lobehub.com/mcp/berrys-canvas)
+
 [Official Website](https://berrys.io) | [App & Sign Up](https://app.berrys.io) | [Client Setup Guides](https://berrys.io/plugins)
 
 **Your agent turns product photos into on-brand listing images, ads, and short videos on one canvas.**

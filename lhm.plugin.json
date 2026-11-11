@@ -1,7 +1,7 @@
 {
   "identifier": "berrys-canvas",
   "name": "Berrys AI",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Give your agent a creative studio. Turn one product photo into on-brand listing images, campaign visuals, and short vertical videos.",
   "homepage": "https://github.com/BerryAILABS/berrys-mcp",
   "author": "BerryAILABS",
@@ -420,5 +420,6 @@
       "name": "berrys-product-video",
       "description": "Storyboard a multi-shot product video and maintain reference continuity across cuts"
     }
-  ]
+  ],
+  "license": "MIT"
 }
