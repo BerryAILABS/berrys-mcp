@@ -1,5 +1,7 @@
 # Berrys AI — MCP Server
 
+[Official Website](https://berrys.io) | [App & Sign Up](https://app.berrys.io) | [Client Setup Guides](https://berrys.io/plugins)
+
 **Your agent turns product photos into on-brand listing images, ads, and short videos on one canvas.**
 
 Berrys connects to the AI agent you already use: Claude, Claude Code, ChatGPT, Codex, Cursor, Gemini CLI, or VS Code. You plan the work with your agent. Berrys builds it on your visual canvas and runs the generation, with your credits and your approval.
